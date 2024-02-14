@@ -28,7 +28,11 @@ int main(void) {
 
 /*What are the ranges of memory addresses occupied by both arrays?
 Do these ranges of memory addresses overlap?
-Does the lifetime of the two arrays overlap? Why (not)? no they dont but explain it Onno
+Does the lifetime of the two arrays overlap? Why (not)? 
 How much memory does the program need to store the two arrays? */
 
-/// 1 The size of both
+/// The ranges occupied by both arrays its the first and the last one 
+/// No these ranges do not overlap because each one of the functions has a local array
+/// No their lifetime does not overlap because after they are called or used there is new memory created and the previous one is destroyed
+/// For the integers it needs 4096 because 1023*4= 4096 bytes
+/// For the doubles it needs 8192 because 1023*8 = 8192 bytes
