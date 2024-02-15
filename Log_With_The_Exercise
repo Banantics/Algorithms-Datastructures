@@ -287,19 +287,25 @@ Include your code & notes here.
 ## Looking back
 
 ### What we've learnt
+Me and my team mate now understand better dynamic memory like malloc realloc and free and how they operate 
+we understand lifetime memory and the automatic lifetime memory how it works and that we cant use free on the automatic lifime memory. The diffrent data types we also
+have better undestanding the heap and the stack which the heap is the dynamic memory we assign with malloc and free and the stack is the automatic lifetime memory. We 
+also understand the benefits of both of the lifetime memory that we should not locate it and delocate it everytime which is conviniets. But the dynamic memory allocation
+makes it more flexible for the programmar and the way he wants to use it also you have more freedom to manage it.
 
 Formulate at least one lesson learned.
 
 ### What were the surprises
 
-Fill in...
+For me The suprises is the Malloc and free how we can allocate memory and use it also that we dont have the freedom to free automatic lifetime memory.
 
 ### What problems we've encountered
 
-Fill in...
+The problems that we have encountered was the last one we did not understand how we were gonna impliment the capacity and the count of the string and how we have to increase
+the capacity of the string so we can count every a existing in the file but with the help of the teacher and the TA we finished it.
 
 ### What was or still is unclear
-
-Fill in...
+In the beggining everything with malloc and free was unclear to me and my teammate but with the pdf with all the exercises and examples we started getting the hand of it 
+and also the exercises were simple and really well explained and we knew what we should we do 
 
 
