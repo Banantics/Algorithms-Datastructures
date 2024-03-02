@@ -123,6 +123,15 @@ Record your function definition here.
 
 ```c
 void array_append(array * arr, float value);
+void array_append(array_t *arr, float value) {
+
+    if (arr->count >= arr->capacity) {
+        array_reserve(arr, arr->capacity);
+    }
+    arr->data[arr->count] = value;
+    arr->count++;
+
+}
 ```
 
 Make sure to test your function using the `test_array_append` function.
@@ -135,6 +144,20 @@ Record your function definition here.
 
 ```c
 void array_insert(array * arr, size_t index, float value);
+void array_insert(array_t *arr, size_t index, float value) {
+    if (arr->count >= arr->capacity) {
+        array_reserve(arr, arr->count);
+
+    }
+    size_t temp;
+    for (size_t i = arr->count; i >index; i--) {
+        temp = arr->data[i];
+        arr->data[i] = arr->data[i-1]; /// we insert the old element
+       arr->data[i-1] = temp;
+    }
+ arr->data[index] = value; /// we insert the new elements
+    arr->count++; /// increase the count of the array
+}
 ```
 
 Make sure to test your function using the `test_array_insert` function.
@@ -146,6 +169,21 @@ Record your function definition here.
 
 ```c
 void array_remove(array * arr, size_t index);
+void array_remove(array_t *arr, size_t index) {
+    /// We have to remove one size of the array
+    /// Then we should shift all the array one behind example size = 0: 1, size = 1: 2, size = 2: 3, size = 3: 4
+    /// We remove the last one so it becomes  size = 0: 2, size = 1: 3
+   size_t temp;
+    if (index == arr->capacity) {
+        arr[index].capacity = arr[index - 1].capacity;
+    }
+    for (size_t i = index; i < arr->count; i++) {
+        temp = arr->data[i];
+       arr->data[i] = arr->data[i + 1];
+       arr->data[i + 1] = temp;
+    }
+    arr->count--;
+}
 ```
 
 Make sure to test your function using the `test_array_remove` function.
