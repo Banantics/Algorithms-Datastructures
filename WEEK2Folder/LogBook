@@ -84,9 +84,28 @@ typedef struct array {
 Record your answer here.
 
 ```C
-array_t *array_init(array_t *pArray, size_t capacity) {
-
+array_t *array_init(array_t *p_array, size_t capacity) { // version 2
+if (p_array != NULL){
+	p_array->data = malloc(sizeof(float[capacity])); /// This is what makes this function right we manually alocate a byte memory we are gonna use for the data of the array
+	p_array->count = 0;
+	     p_array->capacity = p_array->data != NULL ? capacity : 0; /// Here we check if we have succesfully alocated space for our Elements
+	/// this basicly does if data is != NULL  then initializite capacity else if there is no place we can put the elemetns make it equal to 0;
 }
+}
+/// The first one because its using automatic allocation memory which will lead to undefined behavior of the program
+
+array_t* array_init(array_t *p_array, size_t capacity) { // version 1
+ if (p_array != NULL){
+ float data[capacity];
+
+
+ p_array->capacity = capacity;
+ p_array->data = data;
+ p_array->count = 0;
+ }
+ return p_array;
+ } /// this is wrong because we cant let the compilier free memory because out of the heap because this is how we free memory for the stack
+/// Also this is going to make the program have undefined behaviour.
 ```
 
 
@@ -95,9 +114,19 @@ array_t *array_init(array_t *pArray, size_t capacity) {
 Record your answer here.
 
 ```c
-int main(void) {
-    
-}
+// program 2
+12 int main(void) {
+13 array_t *array = (array_t *) malloc(sizeof(array_t));
+14 array_init(array, 10);
+15 // .... do some work ...
+7
+16 // finally, clean up
+17 array_destroy(array);
+18 free(array);
+19 }
+/// Its the second one because this is the way we free memory of the heap 
+
+
 ```
 
 ### Activity 5: Resizing an array
@@ -108,11 +137,12 @@ Record your function definition here.
 void array_reserve(array *p_array, size_t min_capacity) {
     size_t capacity = p_array->capacity;
     while (capacity < min_capacity) {
-        capacity = (capacity + 1) * ...
+        capacity = (capacity + 1) * 2 /// We found on the internet that the average growth rate of a dymanic array
     }
 	
 	if (capacity != p_array->capacity) {
-		/* reallocate memory, update capacity of array, etc. */
+		p_array = realloc(p_array->data, capacity * sizeof(float));
+        p_array->capacity = capacity;/* reallocate memory, update capacity of array, etc. */
 	}
 }
 ```
@@ -123,6 +153,7 @@ Record your function definition here.
 
 ```c
 void array_append(array * arr, float value);
+```
 void array_append(array_t *arr, float value) {
 
     if (arr->count >= arr->capacity) {
@@ -132,8 +163,6 @@ void array_append(array_t *arr, float value) {
     arr->count++;
 
 }
-```
-
 Make sure to test your function using the `test_array_append` function.
 Your code is correct if all the `assert` statements in the test function pass.
 
@@ -144,6 +173,7 @@ Record your function definition here.
 
 ```c
 void array_insert(array * arr, size_t index, float value);
+```
 void array_insert(array_t *arr, size_t index, float value) {
     if (arr->count >= arr->capacity) {
         array_reserve(arr, arr->count);
@@ -158,10 +188,6 @@ void array_insert(array_t *arr, size_t index, float value) {
  arr->data[index] = value; /// we insert the new elements
     arr->count++; /// increase the count of the array
 }
-```
-
-Make sure to test your function using the `test_array_insert` function.
-Your code is correct if all the `assert` statements in the test function pass.
 
 ### Activity 8: Removing by index
 
@@ -169,6 +195,8 @@ Record your function definition here.
 
 ```c
 void array_remove(array * arr, size_t index);
+
+
 void array_remove(array_t *arr, size_t index) {
     /// We have to remove one size of the array
     /// Then we should shift all the array one behind example size = 0: 1, size = 1: 2, size = 2: 3, size = 3: 4
@@ -191,51 +219,152 @@ Your code is correct if all the `assert` statements in the test function pass.
 
 ### Activity 9: Constant time complexity
 
-Record your answer here
+Constant time complexity  or Big O notation is an idea to allows us to analyze and find the efficiency of algorithms for worst-case scenarios. Its usually written like O(1) and it does not matter how big the size of the input data the algorithm is constant which means that it does not matter how much data we input in the execution of the algorithm is going to always stay the same. This is crucial when we want to examine performance and responsiveness is important.
 
 ### Activity 10: Worst-case time complexity
 
 | Operation       | Worst-case time complexity |
 | --------------- | -------------------------- |
-| Insert          |                            |
-| Remove          |                            |
-| Lookup / access |                            |
+| Insert          |          O(n)                  | /// This is the final arrays size afther Big notation
+| Remove          |            O(n)              | /// This as well
+| Lookup / access |               O(1)             | /// We are accessing a element with an index and it does not scale with the size of the array
 
 Record your answer here
 
 ### Activity 11: Complexity of *append*
 
-Record your answer here
+** The time complexity of append array its O(1) this is appending an element to the end of an array is a constant time operation regardles of the size of the array.
+
+** The average amortized time coplexity of the append operation is O(1);
+
+** The diffrence between worst-case time complexity is because the notation is O(n) which means that
+everytime we want to input a new element we have to resize it and copy the whole array to a new one. Diffrently
+the O(1) notation just add one extra elemenet at the end of the array and we dont have to resize it.
 
 ### Activity 12: Storing grades in a dynamically growing array
 
 ```c
-Include your program's code here.
+#include <stdio.h>
+#include <stdlib.h>
+#include "array.h"
+#include "easy_input.h"
+#include "test_array.h"
+
+// Asks the user to input grades and stores them in the array
+// input stops when the user enters 0
+// TODO: finish implementation
+void input_grades(array_t * grades);
+
+
+// computes and returns the average grade
+// TODO: implement
+float compute_average(const array_t * grades);
+
+// counts and returns the number of grades that are at least the threshold
+// TODO: implement
+int num_passed(const array_t * grades, float threshold);
+
+int main(void) {
+    setbuf(stdout, NULL);
+    /*
+     * This project consists of multiple source & header files.
+     * This file (main.c) includes two header files that are in this project.
+     * Have a look at these files - array.h and easy_input.h. They contain
+     * the function prototypes for functions defined in their corresponding
+     * source files - array.c and easy_input.c.
+     * You can simply call those functions from here. Be aware that most of the functions
+     * in array.c must be implemented still!
+     *
+     * You can test your array functions using the three functions provided in test_array.h.
+     * These functions use 'assert' statements to assert that some condition holds. If these conditions
+     * do not hold, your program will crash with a message that lets you know which one failed.
+     */
+
+    test_array_append();
+    test_array_insert();
+    test_array_remove();
+
+    // activity 12 -- grade administration system with dynamic array
+
+    array_t grades;         // the dynamic array
+    array_init(&grades, 0); // initialize array with capacity of 0
+    input_grades(&grades);
+    float average = compute_average(&grades);
+    int passed = num_passed(&grades, 5.5f);
+
+    printf("Average grade: %.2f\n", average);
+    printf("%d out of %zu students passed\n", passed, grades.count);
+
+    array_destroy(&grades);
+    return 0;
+}
+
+
+void input_grades(array_t * grades) {
+    (void) grades;
+    float grade = input_float("Please enter a grade (0 to stop)");
+    while (grade != 0.0f) {
+        // TODO: append grade to the array if it is in range 1..10
+        if (grade >= 1 || grade <= 10){
+            array_append(grades,grade);
+        }
+        grade = input_float("Please enter a grade (0 to stop)");
+    }
+}
+float compute_average(const array_t * grades){
+    float average;
+    float  sum = 0.0;
+    for (size_t i = 0; i < grades->capacity; ++i) {
+        sum += grades->data[i];
+    }
+    average = sum / grades->capacity;
+    return average;
+}
+
+
+int num_passed(const array_t * grades, float threshold){
+    int pass = 0;
+    for (size_t i = 0; i < grades->capacity; ++i) {
+        if(grades->data[i] >= threshold){
+            pass++;
+        }
+    }
+
+    return pass;
+}
+
 ```
 
 
 ## Looking back
 
 ### What we've learnt
+Now we have better understanding of the Big O notation with O(n) which copies the array into a new one to increase the size and also the
+appending time complexity which is O(1) which increases the array size without having to create a new array.
+
 
 Formulate at least one lesson learned.
+Activity 9: what constant time complexity means. That helps us analyze the efficiency and the performence of the worst case scenarios also it shows us that it does not matter how big the input into the array its always gonna be constant which means that gonna take the same time to execute.
 
 ### What were the surprises
 
-Fill in...
+We really did not know this time complexity notations do and that they exist for arrays to optimize the efficiency of algorithms.
 
 ### What problems we've encountered
 
-Fill in...
+We had problem with kinda finding the solutions for the functions we had to test but with a bit of help from our classmates we were able to overcome it.
 
 ### What was or still is unclear
 
-Fill in...
+Its not exactly that its unclear but are there other notations like this? like O(n+m) and what they do? are there even bigger notations?
 
 ### How did the group perform?
 
 How was the collaboration? What were the reasons for hick-ups? What worked well? What can be improved next time?
 
+
+The group performance was good we did equal work only at the end because my teammate had an exam to prepare for I did more of the formulation of everything but it's okay we are gonna swap and next time he is going to do more of the formulation. There were mostly no
+hik-ups only things we had problems with but our teacher and TA helped a lot. Something that works extremely well is how we can both work on the same document in Git Hub and work at the same time in Visual Studios it saves a lot of time and no confusion between us as to what we did. Something that can definitely improve is time management with the different Activities because if we don't understand an Activity we stay too much and waste our time when we can't solve it instead of continuing into the next one  
 
 
 
