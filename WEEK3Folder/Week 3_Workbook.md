@@ -1,13 +1,13 @@
-﻿﻿# Week 3 - Linked Lists
+﻿# Week 3 - Linked Lists
 
 ## Team
 
 >Members:
 >
->- Member one
->- Member two
+>- Konstantin Apostolov
+>- Onno Oerbekka
 >
-> Date: *day* *month* 2024
+> Date: *4* *3* 2024
 
 ## Provided code
 
@@ -41,15 +41,20 @@ node_t first = { .value = 1,
                 .next = NULL}}}};
 
 printf("first: %d\n", first.value);
-printf("second: %d\n", (*(first.next)).value);
-printf("third: %d\n", (*(*first.next).next).value);
-printf("fourth: %d\n", (*(*(*first.next).next).next).value);
+printf("second: %d\n", (first.next->value);
+printf("third: %d\n", (first.next->next->value);
+printf("fourth: %d\n", (first.next->next->next->value);
 ```
 
 ### Activity 2: Traversal
-
-Implement the function `print_nodes`, so that the two calls from the `main` function give the expected results.
-
+```c
+void print_nodes(const node_t *first) {
+while (first != NULL){
+printf("%d\n", first->value);
+first = first->next;
+ }
+}
+```
 ```c
 void print_nodes(const node_t * first);
 
