@@ -79,6 +79,17 @@ Implement the `list_destroy` function, such that the code does not contain a mem
 Use the address sanitizer to check if your code runs without memory problems.
 
 ```c
+void list_destroy(list_t *plist) {
+    (void) plist;
+
+    while (plist ->head!= NULL) {
+        node_t* current = plist->head;
+        plist->head = plist->head->next;
+        free(current);
+        // TODO: traverse the list and free all nodes (Activity 3)
+    }
+}
+
 list_t list;
 list.head = node_create(2);		// pointer to first node
 list.head->next = node_create(3);	// create and add second node
@@ -95,11 +106,30 @@ Use the `test_list_append` function to test your implementation.
 
 ```c
 void list_append(list_t * list, int value);
+void list_append(list_t *plist, int value) {
+    (void) plist;
+    (void) value;
+    node_t *node = node_create(value);
+    if (plist->head == NULL) {
+       plist->head = node;
+    } else {
+        while (plist->head->next != NULL) { /// we are trying to find the end of the list so we can append
+            plist->head = plist->head->next;
+        }
+        plist->head->next = node;
+        // TODO: append value to the list by adding a new node after the last node (Activity 4)
+    }
+}
 ```
 
 ### Activity 5: Time complexity of prepend and append
 
-Record your answer here
+/// The time complexity of appending a new element is O(1) because
+/// We increase the size of the list by one and we dont have to copy the whole list
+/// Neither we have to allocate new memory to use to append. The time wont change
+/// We know that it does not matter how big the input of the elements are the time of the
+/// Execution is the same .
+/// It still would be O(1) notation
 
 ### Activity 6: Access by index
 
@@ -108,12 +138,24 @@ Use the `test_list_at` function to test your implementation.
 
 ```c
 const node_t *list_at(const list_t *list, size_t index);
+const node_t * list_at(const list_t *plist, size_t index) {
+(void) plist;
+size_t checking_index = 0;
+const node_t *node = plist->head;
+while (plist->head != NULL && checking_index < index){
+node = node->next;
+checking_index++;
+}
+return node;
+
+}
 ```
 
 ### Activity 7: A bad for-loop
 
-Record your answer here
+```c
 
+```
 ### Activity 8: Removal in a singly-linked list
 
 Implement the `list_remove_last` function.
@@ -121,6 +163,32 @@ Use the `test_list_remove_last` function to test your implementation.
 
 ```c
 bool list_remove_last(list_t * list);
+
+ (void) plist;
+    node_t *current = plist->head;
+    node_t  *previous;
+
+    if(plist->head == NULL){ /// this mean the list is empty
+        return false;
+    }
+
+    if(plist->head->next == NULL){ /// check if there is only one node
+        free(plist->head);
+        plist->head = NULL;
+        return true;
+    }
+    else {
+        while (current->next != NULL) { /// we do it till we are on the second to last  node
+        /// this way current can point to the last one and previous to the second to last
+            previous = current;
+            current = current->next;
+
+        }
+        free(previous->next); /// we free it
+        previous->next =NULL; /// we remove the lsat node
+        return true;
+    }
+}
 ```
 
 ### Activity 9: Appending to a doubly linked list
