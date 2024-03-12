@@ -264,6 +264,20 @@ Use the `test_list_insert` function to test your implementation.
 ```c
 // updates the list by inserting value before the node referred to by before
 void list_insert(list *list, node_t *before, int value);
+
+void list_insert_before(list_t *plist, node_t *pnode, int value) {
+    node_t * node = node_create(value);
+    if (node != NULL ||pnode->next !=plist->tail) {
+        if(pnode==plist->head) list_prepend(plist,value);
+        else {
+            node->prev=pnode->prev;
+            node->next=pnode;
+            pnode->prev->next=node;
+            pnode->prev=node;
+        }
+    }
+
+}
 ```
 
 ### Activity 12: Time complexities
