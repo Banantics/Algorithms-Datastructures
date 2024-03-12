@@ -208,10 +208,32 @@ Use the `test_list_remove` function to test your implementation.
 
 ```c
 // updates the list by removing the node referred to by node from the list
-void list_remove(list_t *list, node_t *node) {
-	node->prev->next = node->next;
-	node->next->prev = node->prev;
-	free(node);
+void list_remove(list_t *plist, node_t *pnode) {
+    (void) plist;
+    (void) pnode;
+
+if(plist->head->next == NULL && plist->tail->prev == NULL){
+    free(pnode);
+    plist->head = NULL;
+    plist->tail = NULL;
+    return;
+}
+
+ if (pnode == plist->head){
+     plist->head = pnode->next;
+ } else if(pnode == plist->tail){
+     plist->tail = pnode->prev;
+     plist->tail->next = NULL;
+     plist->head->prev = NULL;
+
+ } else {
+     pnode->prev->next = pnode->next;
+     pnode->next->prev = pnode->prev;
+ }
+    free(pnode);
+
+
+    // TODO: remove the given node from the list (Activity 10)
 }
 ```
 
