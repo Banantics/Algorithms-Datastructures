@@ -199,6 +199,25 @@ Use the `test_list_append` function to test your implementation.
 
 ```c
 void list_append(list_t * list);
+void list_append(list_t *plist, int value) {
+    (void) plist;
+    (void) value;
+
+    node_t *node = node_create(value);
+    if (node != NULL) {
+        if (plist->head == NULL) {
+            plist->tail = node;
+            plist->head = node;
+        } else {
+
+            plist->tail->next = node;
+            node->prev = plist->tail;
+            plist->tail = node;
+
+
+        }
+    }
+}
 ```
 
 ### Activity 10: Removal from a doubly linked list
