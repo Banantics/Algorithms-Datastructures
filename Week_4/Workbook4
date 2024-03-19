@@ -1,13 +1,13 @@
-# Week 4 - Stacks and Queues
+﻿# Week 4 - Stacks and Queues
 
 ## Team
 
 >Members:
 >
->- Member one
->- Member two
+>- Konstantin Apostolov
+>- Onno Oerbekke
 >
-> Date: *day* *month* 2023
+> Date: 11/3/2023
 
 ## Provided code
 
@@ -23,15 +23,41 @@ Make sure to have the activities signed off regularly to ensure progress is trac
 
 ### Activity 1: LIFO vs FIFO
 
-Record your answer here
+The acronym for LIFO are Last In First Out
+The ancronym for FIFO is First In First Out
+Its memory buffer because if you input a element it keeps the fist imputed element and removes the last inputed element first
+
 
 ### Activity 2: Stacks and LIFO
 
-Record your answer here
+Push "E" E
+Push "A" EA
+Push "S" EAS
+Pop "S" EA
+Push "Y" EAY
+Pop "Y" EA
+Push "Q" EAQ
+Push "U" EAQU
+Push "E" EAQUE
+Pop "E" EQAU
+Pop "U" EQ
+Pop "Q" E
+Push "S" ES
+Push "T" EST
+Pop "T" ES
+Pop "S" E
+Pop "E"
+Push "I" I
+Push "O" IO
+Pop"O" I
+Push "N" IN
+Pop "N" I
+Pop "I"
+Pop ""
 
 ### Activity 3: Pushes and pops
 
-Record your answer here
+Its gonna be answer a).
 
 ### Activity 4: Communication through a linked list
 
