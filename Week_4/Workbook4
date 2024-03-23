@@ -61,66 +61,146 @@ Its gonna be answer a).
 
 ### Activity 4: Communication through a linked list
 
-Record your answer here
+THe Two options that work is FRONT and REAR because we are manipulating them from the last and the the first but if we manipulatie both at the same time we get diffrent outputs.
 
 ### Activity 5: FIFO and queues
 
-Record your answer here
+input "E" = E
+input "A" = AE
+input "S" = SAE
+delete "S" = AE
+input "Y" = YAE
+delete "Y" = AE
+input "Q" = QAE
+input "U" = UQAE
+input "E" = EUQAE
+delete "E" = UQAE
+delete "U" = QAE
+delete "Q" = AE
+input "S" = SAE
+input "T" = TSAE
+delete "T" = SAE
+delete "S" = AE
+delete "A" = E
+input "I" = IE
+input "O" = OIE
+delete "O" = IE
+input "N" = NIE
+delete "N" = IE
+delete "I" = E
+delete "E" = (its gonna be empty)
 
 ### Activity 6: Arrays, linked lists, and queues
 
-| Operation                          |      Array      |   Linked List  |
-| ---------------------------------- | --------------- | -------------- |
-| Insert / remove **first** element  |     O(...)      |      O(...)    |
-| Insert / remove **last** element   |     O(...)      |      O(...)    |
-| Peek first / last element          |     O(...)      |      O(...)    |
+| Operation                          | Array | Linked List |
+| ---------------------------------- |-------|-------------|
+| Insert / remove **first** element  | O(n)  | O(1)        |
+| Insert / remove **last** element   | O(n)  | O(1)        |
+| Peek first / last element          | O(1)  | O(n)        |
 
-Record your answer here
-
+I think It should be double linked list because queues we remove and insert elements similarly to linked list with Big O(1) notation and if you want to see the last element.
+We have to skim through the whole queues like we do the link but also we dont have to shrink or grow the array and copy it everytime.
 ### Activity 7: Time complexities, once again
 
 | Operation                     | Time complexity |
-| ----------------------------- | --------------- |
-| Insert / remove first element |    O(...)       |
-| Insert / remove last element  |    O(...)       |
-| Peek first / last element     |    O(...)       |
+| ----------------------------- |-----------------|
+| Insert / remove first element | O(1)            |
+| Insert / remove last element  | O(1)            |
+| Peek first / last element     | O(1)            |
 
-Record your answer here
+
 
 ### Activity 8: Clock arithmetic
 
-Record your answer here
-
+```c
+size_t buffer_get_rear_idx(const buffer_t *buffer) {
+(void) buffer;
+return (buffer->head + buffer->count) % buffer->capacity; // head is like the oldest element inputed
+// in the buffer and count is how many elements are currently inputed so in P e a c e
+// P is the head the First element inputed and the current count of the elements is 5
+// and if we want to find the rear with the head and the count where we are gonna put it
+// and with the % we wrap around the buffer.
+// TODO: Implement (Activity 8)
+}
+```
 ### Activity 9: Writing into a circular buffer
 
-Record your answer here
+```c
+bool buffer_try_write(buffer_t *buffer, char character) {
+(void) buffer;
+(void) character;
+// TODO: Implement (Activity 9)
+size_t write_idx = buffer_get_rear_idx(buffer);
+(void) write_idx;
+if(buffer->count <= buffer->capacity - 1){
+buffer->data[write_idx] = character;
+buffer->count++;
+return true;
+}
+return false;
+}
+```
 
 ### Activity 10: Reading from a circular buffer
 
-Record your answer here
+```c
+bool buffer_try_read(buffer_t *buffer, char *character) {
+(void) buffer;
+(void) character;
+// TODO: Implement (Activity 10)
 
+    if(buffer->count > 0){
+        *character = buffer->data[buffer->head];
+        buffer->count--;
+        buffer->head = (buffer->head + 1) % buffer->capacity;
+        return true;
+
+    }
+    return false;
+}
+```
 ### Activity 11: Testing the queue
 
-Record your answer here
-
+To be honest i dont really understood what diffrence i should see they were exactly the same files
 ## Looking back
 
 ### What we've learnt
+bool buffer_try_read(buffer_t *buffer, char *character) {
+(void) buffer;
+(void) character;
+// TODO: Implement (Activity 10)
 
-Formulate at least one lesson learned.
+    if(buffer->count > 0){
+        *character = buffer->data[buffer->head];
+        buffer->count--;
+        buffer->head = (buffer->head + 1) % buffer->capacity;
+        return true;
+
+    }
+    return false;
+}
+The circular buffer how to make it read a character and then move the head to the next one but we also
+should make it wrap around the array like after we reach the last character we should make it back to the other side.
 
 ### What were the surprises
 
-Fill in...
+The suprises was kinda that we did not know  we could really wrap arrays and it was kinda challenging in the beginning
+but there were some tips so implimnet it so it was easier to do.
 
 ### What problems we've encountered
 
-Fill in...
+This week i dont think we encountered any problems only that we feel a little bit behind because
+we had to study for another exam and we were trying to catch up to our classmates.
 
 ### What was or still is unclear
 
-Fill in...
+This time we dont have anything unclear FIFO implimentation is way easier the the previous weeks
+especially then the linked lists.
 
 ### How did the group perform?
 
 How was the collaboration? What were the reasons for hick-ups? What worked well? What can be improved next time?
+
+The collaboration with my teammate was not very good this time because of the exam mostly 
+none of us did not do any work at least one activity a day and we feel behind because of that
+and we were mostly focusing on the other assignments we were slowly falling behind.
