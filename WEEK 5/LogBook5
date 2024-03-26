@@ -1,0 +1,250 @@
+﻿# Week 5 - Sorting
+
+## Team
+
+>Members:
+>
+>- Konstantin Apostolov
+>- Onno Orrbekka
+>
+> Date: *18* *3* 2024
+
+## Activities
+
+Make sure to have the activities signed off regularly to ensure progress is tracked.
+
+Download the provided project and open it in CLion.
+
+### Activity 1: Benefits of sorted data
+
+The diffrence between trying to find unsorted array and sorted in big O notation is that. Sorted it O(log n) and Unsorted is O(n).
+The name of the algortihm to search a sorted array its Binary search because it halfs the values.
+
+### Activity 2: Find the smallest element
+```c
+size_t g_compares = 0;
+
+int *find_min(int *values, size_t count) {
+(void) values;
+(void) count;
+if (values == NULL) return NULL;
+int *min = values;
+for (size_t i = 1; i < count ; ++i) {
+g_compares++;
+if (*min > values[i]) {
+min = &values[i];
+}
+}
+return min;
+}
+// TODO (Activity 2): implement
+
+void array_sort(array_t *array) {
+(void) array;
+g_compares = 0;
+for (size_t i = 0; i < array->count ; ++i) {
+swap(&array->data[i], find_min(&array->data[i],array->count -i));
+}
+```
+
+
+### Activity 3: Implement selection sort
+
+```c
+void array_sort(array_t *array) {
+(void) array;
+g_compares = 0;
+for (size_t i = 0; i < array->count ; ++i) {
+swap(&array->data[i], find_min(&array->data[i],array->count -i));
+}
+```
+### Activity 4: Selection sort: comparisons
+
+Record your answer here.
+
+Use the website [Tables generator](https://www.tablesgenerator.com/markdown_tables) to easily create a table for use in markdown documents.
+
+| Array size | Comparisons |
+|------------|------------|
+| 5          | 10         |
+| 10         | 45         |
+| 15         | 105        |
+| 20         | 190        |
+| 50         | 1225       |
+| 100        |  4950      |
+| 150        |   11175    |
+| 250        |    31125   |
+| 500        |    124750        |
+| 1000       |   499500         |
+| 5000       |    12497500        |
+| 10000      |    49995000        |
+
+### Activity 5: Merge sort - step by step
+First we decompose them into individual lists.
+9, 0, 31, 5, 2, 8, 15, 13, 6, 4, 7, 11, 19
+
+Then we merge 9 and 0: 0,9
+Then we merge 5 and 31: 5,31
+Then we merge 2 and 8 : 2,8
+Then we merge 15 and 13: 13,15
+Then we merge 6 and 4: 4,6
+Then we merge 7 and 11: 7,11
+19 is remainder:
+0, 9, 5, 31, 2, 8, 13, 15, 4, 6, 7, 11, 19
+
+
+Then we merge the sublist further
+Merge (0, 9) and  (5, 31): 0, 5 , 9 , 31
+Merge (2, 8) and (13, 15): 2, 8, 13, 15
+Merge (4, 6) and (7, 11): 4, 6, 7, 11
+(19) is remainder:
+
+0, 5, 9, 31, 2, 8, 13, 15, 4, 6, 7, 11, 19
+
+Merge (0, 5, 9, 31) and (2, 8, 13, 15): 0, 2, 5, 8, 9, 13, 15, 31
+Merge (4, 6, 7, 11) and (19): 4, 6, 7, 11, 19
+
+0, 2, 5, 8, 9, 13, 15, 31, 4, 6, 7, 11, 19
+
+Merge (0, 2, 5, 8, 9, 13, 15, 31) and (4, 6, 7, 11, 19):
+
+0, 2, 4, 5, 6, 7, 8, 9, 11, 13, 15, 19, 31
+
+Stage Subsequences
+13 lists: [9], [0], [31], [5], [2], [8], [15], [13], [6], [4], [7], [11], [19]
+7 lists: [0, 9], [5, 31], [2, 8], [13, 15], [4, 6], [7, 11], [19]
+4 lists: [0, 5, 9, 31], [2, 8, 13, 15], [4, 6, 7, 11], [19]
+2 lists: [0, 2, 5, 8, 9, 13, 15, 31], [4, 6, 7, 11, 19]
+1 list: [0, 2, 4, 5, 6, 7, 8, 9, 11, 13, 15, 19, 31]
+
+
+### Activity 6: Splitting a linked list in two halves
+```c
+node_t *split(node_t *phead) {
+node_t *fast = phead->next;
+node_t *slow = phead;
+while (fast != NULL && fast->next != NULL) {
+fast = fast->next->next;
+slow = slow->next;
+}
+node_t *newHead = slow->next; // The head of the second half of the list.
+slow->next = NULL; // Split the list by terminating the first half.
+return newHead;
+}
+```
+
+### Activity 7: Merging two linked lists
+```c
+node_t *merge(node_t *a, node_t *b) {
+// Printing some handy debug information
+printf("Merging a -> ");
+node_sequence_print(a);
+printf(" with b -> ");
+node_sequence_print(b);
+printf("\n");
+
+    // this function reconstructs a linked list from the two linked lists a and b.
+    // sentinel will be used as a "fake" head of the resulting list, nodes from node sequences a and b will be appended to sentinel.
+    node_t sentinel = {.next = NULL};
+    node_t *result = &sentinel;         // result always points to the last node in the sequence we're constructing
+    (void) result;  // remove this line when you've implemented this function
+    while (a != NULL && b != NULL) {
+        g_compares++;   // a comparison is made, count it
+        if (a->value < b->value) {
+            // TODO (Activity 7): append a to our result
+            result->next = a;
+            a = a->next;
+        } else {
+            // TODO (Activity 7): append b to our result
+          result->next =  b;
+            b = b->next;
+        }
+         result = result->next;
+        // TODO: let result again point to the last node in the list
+    }
+    // Either a or b will be NULL at this point
+    if(a!= NULL) {
+        result->next = a;
+    }
+    if(b != NULL){
+        result->next = b;
+    }
+    // TODO (Activity 7): append the remaining node sequence to the result
+    return sentinel.next;   // return the sequence of nodes we've constructed
+}
+```
+### Activity 8: Implement merge sort
+```c
+node_t *merge_sort(node_t *first) {
+// TODO (Activity 8) : complete the code
+if (first->next == NULL) return first;  // no need to sort a list with one element
+
+    // TODO: split first into two lists,
+node_t *second_half_split = split(first);
+
+        //  merge_sort these two lists, and then merge them together again
+     node_t *sorted_first_half = merge_sort(first);
+     node_t *sorted_second_half= merge_sort(second_half_split);
+
+
+
+    //  Finally, return the first element of the sorted list
+    return merge(sorted_second_half,sorted_first_half);
+}
+```
+
+### Activity 9: Merge sort: impact of order
+We think because the list is already sorted it makes it harder because the code has to check individually if every node is correct.
+Diffrently when he checks the 5,4,3,2,1 because every node is smaller then the previous one and it does not have to check if they are in the correct place.
+### Activity 10: Merge sort: determining efficiency
+
+| List length | Comparisons |
+|-------------|-------------|
+| 5           | 5 - 7       |
+| 10          | 15 - 19     |
+| 15          |  28         |
+| 20          |   40        |
+| 50          |133          |
+| 100         |   316       |
+| 250         |   983       |
+| 500         |   2216      |
+| 1000        |   4932      |
+| 5000        |    29804    |
+| 10000       |     64608   |
+
+### Activity 11: Compare merge sort and selection sort
+
+| Algorithm | Time complexity |
+| --------------------------------- |-----------------|
+| Merge sort | O(n log(n))     |
+| Selection sort | O(x^2)          |
+
+Record your answer here
+
+## Looking back
+
+### What we've learnt
+
+The whole Merge slip and sort thing with using the technique divide and conquer which means we split the list into individual parts. Then we merge two parts
+after we merge the two parts we put the smallest value upfront and we do it as many parts we have and we always have left over.
+Then we do the save with the double list we have created we add everything till we have it sorted from smallest to highest.
+
+### What were the surprises
+
+To be honest this technique was kinda suprising and its really intresting somebody thought of that and its really useful and simple instead to have to check
+individually every part of the data.
+
+### What problems we've encountered
+
+We had kinda problems with the split function like when the fast pointer reachest the end the slow pointer should of reach the middle of the list.
+But after we returned them we had an endless loop. We did not know we have to safe the middle Head now into a new node and then return it.
+
+### What was or still is unclear
+
+Right now we have pretty clear understanding how everything is working.
+
+### How did the group perform?
+
+How was the collaboration? What were the reasons for hick-ups? What worked well? What can be improved next time?
+
+The collaboration with my teammate was good we did not have any problems only the things we did not understand and we were helping each other to solve them.
