@@ -1,0 +1,395 @@
+# Week 8 - Hashing
+
+## Team
+
+>Members:
+>
+>- Konstantin Apostolov
+>- Onno Orbekka
+>
+> Date: *14* *4* 2024
+
+## Activities
+
+Make sure to have the activities signed off regularly to ensure progress is tracked.
+
+Download the provided project and open it in CLion.
+
+### Activity 1: The costs of maintaining order
+
+We insert 8609 (0 relocation)
+We insert 6348 (1 relocation) (6348,8608)
+We insert 4992 (2 relocation) (4992,6348,8608)
+We insert 5839 (2 relocation) (4992,5839,6348,8608)
+We insert 1622 (4 relocation) (1622,4992,5839,6348,8608)
+We insert 5450 (3 relocation) (1622,4992,5450,5839,6348,8608)
+We insert 7197 (1 relocation) (1622,4992,5450,5839,6348,7197,8608)
+We insert 4827 (5 relocations (1622,4827,4992,5450,5839,6348,7197,8608)
+
+Finally its going to be 18 insertions
+
+### Activity 2: Calculate the moduli
+
+| id         | 8609 | 6348 | 4992 | 5839 | 1622 | 5450 | 7198 | 4827 |
+| ---------- | ---- |------|------|------|------|------|------|------|
+| **mod 8**  | 1    | 4    | 0    | 7    | 6    | 2    | 6    | 3    |
+| **mod 16** | 1    | 12   | 0    | 15   | 6    | 10   | 14   | 11   |
+| **mod 17** | 7    | 7    | 11   | 8    | 7    | 10   | 7    | 16   |
+
+### Activity 3: Hash functions
+
+So I searched a bit and to my undestanding hash functions are used mostly used in cybersecurity.
+I found 3 types of hash functions The MD5,SHA-256,SHA-3 which is the newest one.
+They are used if a cyberattack happens the passwords of the users are encrypted in a way.
+That they cant be reversed by the hacker so the users stay secured.
+I also found that they are used in documents to see if they have been modified.
+Because once you make a hash and try to make a hash of the same file in the future.
+Its exactly the same hash but if its modified the hash changes.
+
+### Activity 4: Simplistic hash function
+
+```c
+size_t simple_hash(const char* str) {
+    size_t hash = 0;
+    while (*str) {
+        hash += *str;
+        str++;
+    }
+    return hash;
+}
+
+
+#include "iostream"
+
+
+
+
+size_t simple_hash(const char *str) {
+    size_t hash = 0;
+    while (*str) {
+        hash += *str;
+        str++;
+    }
+    return hash;
+}
+
+
+
+int main(){
+const char *string[11]{"pictures", "strength", "partners", "computer", "empty",
+                      "words", "nasty", "spoon", "visit", "busy", "work"};
+
+    for (int i = 0; i < 11; ++i) {
+        size_t batman = simple_hash(string[i]);
+        printf("%s: %zu \n",string[i],batman);
+
+    }
+    return 0;
+}
+pictures: 879
+strength: 879
+partners: 879
+computer: 879
+empty: 559
+words: 559
+nasty: 559
+spoon: 559
+visit: 559
+busy: 451
+work: 451
+```
+
+What is the hash of the strings "pictures", "strength", "partners", "computer", "empty", "words", "nasty", "spoon", "visit", "busy", and "work" when using the `simple_hash` function?
+
+| Word        | hash |
+| ----------- |------|
+| pictures    | 879  |
+| strength    | 879  |
+| partners    | 879  |
+| computer    | 879  |
+| empty       | 559  |
+| words       | 559  |
+| nasty       | 559  |
+| spoon       | 559  |
+| visit       | 559  |
+| busy        | 451  |
+| work        | 451  |
+
+### Activity 5: Implement FNV-1a
+
+```c
+size_t fnv1a_hash(const char *str) {
+    const size_t FNV_PRIME = 0x00000100000001b3;
+    const size_t FNV_OFFSET_BASIS = 0xcbf29ce484222325;
+    (void) str;
+    // TODO: implement the FNV-1a hash function
+}
+size_t fnv1a_hash(const char *str) {
+    (void) str;
+    // TODO (Activity 5): implement the FNV-1a hash function
+    //  Make sure that the function returns the same hash for uppercase/lowercase versions of the same string
+    size_t hash;
+    const size_t FNV_PRIME = 0x00000100000001b3;
+    const size_t FNV_OFFSET_BASIS = 0xcbf29ce484222325;
+    hash = FNV_OFFSET_BASIS;
+    while (*str) {
+        hash ^= *str;
+        hash *= FNV_PRIME;
+str++;
+    }
+    return hash;
+}
+```
+
+### Activity 6: Case-insensitive string equality
+
+```c
+bool str_equals(const char *s1, const char *s2) {
+    (void) s1;
+    (void) s2;
+    while (*s1 != '\0' && *s2 != '\0') {
+        if (tolower(*s1) != tolower(*s2)) {
+            return false;
+        }
+        s1++;
+        s2++;
+    }
+    return *s1 == *s2;
+}
+size_t fnv1a_hash(const char *str) {
+    (void) str;
+    // TODO (Activity 5): implement the FNV-1a hash function
+    //  Make sure that the function returns the same hash for uppercase/lowercase versions of the same string
+    size_t hash;
+    const size_t FNV_PRIME = 0x00000100000001b3;
+    const size_t FNV_OFFSET_BASIS = 0xcbf29ce484222325;
+    hash = FNV_OFFSET_BASIS;
+    while (*str) {
+        hash ^= tolower(*str);
+        hash *= FNV_PRIME;
+str++;
+    }
+    return hash;
+}
+```
+
+### Activity 7: Implement lookup
+
+```c
+    pair_t *hashmap_lookup(const hashmap_t *map, const char *key) {
+    // TODO: exclude body of this function
+    (void) map;
+    (void) key;
+
+    // TODO (Activity 7): find & return the pair with the given key
+    //  - use the hash function to find the slot
+    //  - use the equals function to find the pair in the slot
+    size_t index = map->hash_fun(key) % map->capacity;
+    node_t *node = map->slots[index].head;
+    while (node != NULL) {
+        pair_t *pair = node->data;
+        if (map->equals_fun(pair->key, key)) {
+            return pair;
+        }
+        node = node->next;
+    }
+    return NULL;
+}
+```
+
+### Activity 8: Adding and removing keys and values
+
+```c
+bool hashmap_add(hashmap_t *map, const void *key, size_t value) {
+	// TODO: implement (Activity 8)
+    //  - use the hash function to find the slot
+    //  - use the equals function to find the pair in the slot
+    //  - update the pair's value if it was found,
+	//  - prepend the pair to the list if it was not found
+	//  - return true if the key was not already in the map, false it was updated
+    
+    size_t index = map->hash_fun(key) % map->capacity;
+    node_t *node = map->slots[index].head;
+    while (node != NULL) {
+        pair_t *pair = node->data;
+        if (map->equals_fun(pair->key, key)) {
+            pair->value = value;
+            return false;
+        }
+        node = node->next;
+    }
+   pair_t* new_pair = create_pair(key,value);
+    node_t * new_node = node_create(new_pair);
+    list_prepend(&map->slots[index], new_node);
+    map->count++;
+    return true;
+
+}
+
+void hashmap_remove(hashmap_t *map, const void *key) {
+    // TODO: implement (Activity 8)
+    //  - use the hash function to find the slot
+    //  - use the equals function to find the pair in the slot
+    //  - remove the pair from the slot (use list_remove)
+    void hashmap_remove(hashmap_t *map, const char *key) {
+    (void) map;
+    (void) key;
+    // TODO: implement (Activity 8)
+    size_t index = map->hash_fun(key) % map->capacity;
+    node_t*  node = map->slots[index].head;
+
+    while(node !=NULL){
+        pair_t * pair = node->data;
+        if(map->equals_fun(pair->key,key)){
+            list_remove(&map->slots[index],node);
+            free(pair);
+            map->count--;
+            return;
+        }
+        node = node->next;
+    }
+
+
+    //  - use the hash function to find the slot
+    //  - use the equals function to find the pair in the slot
+    //  - remove the pair from the slot (use list_remove)
+    //  - free the pair
+}
+```
+
+### Activity 9: Word counting
+```c
+void process_word(hashmap_t *counter, const char *word) {
+(void) counter;
+(void) word;
+pair_t *pair = hashmap_lookup(counter, word);
+if (pair != NULL) { // if its diffrent then null it means the word exist;
+pair->value++;
+} else { // if its equal to null it means the word dosnt exist
+hashmap_add(counter, word, 1); // we start counting from 1 the next word
+}
+// TODO (Activity 9): keep track of the word count using the hashmap
+}
+```
+#### Top 10 words in "alice0.txt"
+
+| rank | word | frequency |
+| ---- |------|-----------|
+| 1    | The  | 1644      |
+| 2    | And  | 872       |
+| 3    | To   | 729       |
+| 4    | A    | 632       |
+| 5    | It   | 595       |
+| 6    | She  | 553       |
+| 7    | I    | 545       |
+| 8    | Of   | 514       |
+| 9    | Said | 462       |
+| 10   | You  | 411       |
+
+#### Frequencies of the following words
+
+| word        | frequency |
+| ----------- |-----------|
+| Dog         | 3         |
+| Caterpillar | 28        |
+| Cat         | 37        |
+| Rabbit      | 51        |
+
+#### Words in slot
+
+How many words are stored in the slot with index 10?
+
+#### Empty slots
+
+How many slots are empty?
+
+#### Length of longest chain
+
+What is the length of the longest of the 31 linked lists?
+
+### Activity 10: Tracking load statistics
+
+| Capacity                     | 3331 | 7333 | 15149 |
+| ---------------------------- |------|------|-------|
+| Items                        | 2576 | 2576 | 2576  |
+| Load factor                  | 0.77 | 0.35 | 0.17  |
+| Fraction of free slots       | 0.46 | 0.70 | 0.84  |
+| Slots with more than 0 items | 1797 | 2167 | 2384  |
+| Slots with more than 1 item  | 601  | 358  | 182   |
+| Slots with more than 2 items | 141  | 45   | 10    |
+| Slots with more than 3 items | 32   | 6    | 0     |
+| Slots with more than 4 items | 5    | 0    | 0     |
+| Length of longest chain      | 5    | 4    | 3     |
+
+Capacity smaller than 200000 for which no slot has more than one word stored after processing "alice0.txt":
+
+### Activity 11: Time complexity
+
+| Operation | Time complexity |
+| --------- |-----------------|
+| Lookup    | O(1)            |
+| Insert    | O(1)            |
+| Remove    | O(1)            |
+
+### Activity 12: Implement rehashing
+
+```c
+void hashmap_rehash(hashmap_t *map, size_t new_capacity) {
+
+    list_t *new_data = calloc(new_capacity, sizeof(list_t));
+
+    for (size_t i = 0; i < map->capacity; ++i) {
+        node_t *current = map->slots[i].head;
+        while (current != NULL) {
+            node_t *next = current->next; // saving the node before we change it
+            pair_t *pair = (pair_t *) current->data;
+            size_t index = map->hash_fun(pair->key) % new_capacity;
+
+
+            list_prepend(&new_data[index], current);
+            current = next;
+        }
+    }
+    free(map->slots);
+    map->slots = new_data;
+    map->capacity = new_capacity;
+
+}
+```
+
+Load statistics when starting with an initial capacity of 31, after processing the file "alice0.txt":
+
+| Capacity                     | ???? |
+| ---------------------------- |------|
+| Items                        | 2576 |
+| Load factor                  | 0.65 |
+| Fraction of free slots       | 0.52 |
+| Slots with more than 0 items | 1908 |
+| Slots with more than 1 item  | 545  |
+| Slots with more than 2 items | 100  |
+| Slots with more than 3 items | 20   |
+| Slots with more than 4 items | 3    |
+| Length of longest chain      | 5    |
+
+## Looking back
+
+### What we've learnt
+
+The rehash function which was probably the hardest where we wanted to allocate memory it and make everything to NULL with calloc
+a
+
+### What were the surprises
+
+Fill in...
+
+### What problems we've encountered
+
+Fill in...
+
+### What was or still is unclear
+
+Fill in...
+
+### How did the group perform?
+
+How was the collaboration? What were the reasons for hick-ups? What worked well? What can be improved next time?
