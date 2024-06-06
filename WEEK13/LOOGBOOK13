@@ -1,0 +1,151 @@
+# Week 13 - Heaps
+
+## Team
+
+>Members:
+>
+>- Konstantin Apostolov
+>- Onno Orbekka
+>
+> Date: *26* *5* 2024
+
+## Activities
+
+Make sure to have the activities signed off regularly to ensure progress is tracked.
+
+### Activity 1: Comparing different data structures
+
+| Data structure     | Find-max | Delete-Max | Insert |
+|--------------------|:--------:|:----------:|:------:|
+| Sorted array       |   O(1)   |    O(n)    |  O(n)  |
+| Sorted linked list |   O(n)   |    O(1)    |  O(1)  |
+| Balanced BST       | Olog(n)  |   Olog(n)         |   Olog(n)     |
+
+Record your answer here
+
+### Activity 2: Identify valid heaps
+
+So the first and the second ones are the heap trees.
+The first one is the min heap tree beacuse every parent node is less or equal to the parent
+The second one is a  not max heap tree which mean every node is greater or equal to its children
+The third one is a min heap tree whcih means every values i s smaller then the other one
+
+### Activity 3: Do it yourself
+
+Record your answer here
+
+### Activity 4: Worst-case time complexities
+
+| Data structure  | Find-max | Delete-Max | Insert | Find |
+|-----------------|:--------:|:----------:|:------:|:----:|
+| Balanced BST    |          |            |        |      |
+| Binary max-heap |          |            |        |      |
+
+### Activity 5: Index computations
+
+```c++
+size_t maxheap::parent_index(size_t index) {
+}
+
+size_t maxheap::left_child_index(size_t index) {
+}
+
+size_t maxheap::right_child_index(size_t index) {
+}
+```
+
+### Activity 6: Implement the find-max operation
+
+```c++
+const task& maxheap::maximum() const {
+
+}
+```
+
+### Activity 7: Bubbling up
+
+```c++
+size_t maxheap::bubble_up(size_t index) {  
+}
+```
+
+### Activity 8: Bubbling down
+
+```c++
+size_t maxheap::bubble_down(size_t index) {  
+}
+```
+
+### Activity 9: Implement heapify
+
+```c++
+size_t maxheap::heapify() {  
+}
+```
+
+### Activity 10: Heapify - time complexity
+
+| Number of values | Number of swaps  |
+|------------------|:----------------:|
+| 5                |      3           |
+| 10               |                  |
+| 20               |                  |
+| 50               |                  |
+| 100              |                  |
+| 200              |                  |
+| 300              |                  |
+| 400              |                  |
+| 500              |                  |
+| 1000             |                  |
+
+Record your answer here
+
+### Activity 11: Bubbling down vector elements
+
+```c++
+void bubble_down(std::vector<int>& values, size_t index, size_t count) {  
+}
+
+void heapify(std::vector<int>& values) {  
+}
+```
+
+### Activity 12: In-place heap sort
+
+```c++
+void heap_sort(std::vector<int>& values) {  
+}  
+```
+
+### Activity 13: General heap sort
+
+Include your generic implementations of `heap_sort`, `heapify` and `bubble_down`.
+
+```c++
+template<typename T>
+void heap_sort(std::vector<T>& values) {
+}
+```
+
+## Looking back
+
+### What we've learnt
+
+Formulate at least one lesson learned.
+
+### What were the surprises
+
+Fill in...
+
+### What problems we've encountered
+
+Fill in...
+
+### What was or still is unclear
+
+Fill in...
+
+### How did the group perform?
+
+How was the collaboration? What were the reasons for hick-ups? What worked well? What can be improved next time?
+
